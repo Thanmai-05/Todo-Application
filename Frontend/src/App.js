@@ -20,6 +20,12 @@ function App() {
     }
   }, []);
 
+  const [abs, setAbs] = useState('')
+  console.log(abs)
+  setAbs('1111')
+  console.log(abs)
+
+
   return (
     <Router>
       <div style={{display:'flex', flexDirection:'column'}}>
