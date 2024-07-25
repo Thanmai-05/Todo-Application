@@ -69,11 +69,27 @@ const deleteTask = async(req,res) => {
       return res.status(404).json({ error: 'Task not found' });
       }
       res.status(200).json({ message: 'Task deleted successfully' });
-      } catch (error) {
-        console.error('Error deleting task:', error);
-        res.status(500).json({ error: 'Failed to delete task' });
-      }
+    } catch (error) {
+      console.error('Error deleting task:', error);
+      res.status(500).json({ error: 'Failed to delete task' });
+    }
 };
 
+const changeTaskStatus = async(req,res) =>{
+  try {
+    const { id } = req.body;
+    const task = await Task.findById(id);
+    if (!task) {
+      return res.status(404).json({ error: 'Task not found' });
+    }
+    console.log("task.status befor:",task.status,"!task.status:",!task.status)
+    await Task.findByIdAndUpdate(id,{status: !task.status} )
+    await task.save();
+    res.status(200).json({ message: 'Task status changed successfully' });
+    } catch (error) {
+      console.error('Error changing task status:', error);
+      res.status(500).json({ error: 'Failed to change task status' });
+    }
+};
 
-module.exports = { register, login, getAllTasks, createTask, deleteTask };
+module.exports = { register, login, getAllTasks, createTask, deleteTask, changeTaskStatus };

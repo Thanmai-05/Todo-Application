@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-
+import Checkbox from '@mui/material/Checkbox';
 
 function TaskManager() {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -19,6 +21,9 @@ function TaskManager() {
 
     fetchTasks();
   }, []);
+
+  
+  
 
   const handleCreateTask = async () => {
     const token = localStorage.getItem('token');
@@ -34,18 +39,34 @@ function TaskManager() {
   };
 
   const handleDeleteTask = async (id) => {
+    try{
     const token = localStorage.getItem('token');
-    await axios.delete(`http://localhost:5000/api/tasks/${id}`, {
-      headers: { Authorization: `Bearer ${token}`
-      },
+    await axios.delete(`http://localhost:5000/api/tasks/${id}`,{
+        headers: { Authorization: `Bearer ${token}`},
       });
       const response = await axios.get('http://localhost:5000/api/tasks', {
         headers: { Authorization: `Bearer ${token}`
         },
         });
         setTasks(response.data);
-        };
-        
+      }catch(error){
+        console.log(error);
+      }
+  };
+  const handleStatus = async (id) =>{
+    try{
+      const token = localStorage.getItem('token');
+      await axios.put('http://localhost:5000/api/tasks',{id},{
+          headers: { Authorization: `Bearer ${token}`},
+      });
+      const response = await axios.get('http://localhost:5000/api/tasks', {
+        headers: { Authorization: `Bearer ${token}`},
+      });
+      setTasks(response.data);
+    }catch(error){
+      console.log(error);
+    }
+  };
   
   return (
     <div className='container'>
@@ -73,6 +94,10 @@ function TaskManager() {
               padding: '10px',
               borderRadius: '5px'
             }}>
+              <div style={{display:'flex', alignItems:'center'}}>
+                <Checkbox {...label}  color="success" checked= {task.status}
+                onClick={() => handleStatus(task._id)}  />
+              </div>
               <div style={{ flex: 1 }}>
                 <strong>Task:</strong> {task.title}<br />
                 <strong>Description:</strong> {task.description}

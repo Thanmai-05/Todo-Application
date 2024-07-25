@@ -11,6 +11,7 @@ function CustomNavbar({ isAuthenticated, setIsAuthenticated }) {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user')
     setIsAuthenticated(false);
     navigate('/');
   };
