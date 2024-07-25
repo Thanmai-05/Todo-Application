@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Checkbox from '@mui/material/Checkbox';
+import EditIcon from '@mui/icons-material/Edit';
 
 function TaskManager() {
   const [tasks, setTasks] = useState([]);
@@ -40,6 +41,8 @@ function TaskManager() {
 
   const handleDeleteTask = async (id) => {
     try{
+      // eslint-disable-next-line no-restricted-globals
+      if(confirm("do you want to delete")){
     const token = localStorage.getItem('token');
     await axios.delete(`http://localhost:5000/api/tasks/${id}`,{
         headers: { Authorization: `Bearer ${token}`},
@@ -49,6 +52,7 @@ function TaskManager() {
         },
         });
         setTasks(response.data);
+      }
       }catch(error){
         console.log(error);
       }
@@ -102,6 +106,7 @@ function TaskManager() {
                 <strong>Task:</strong> {task.title}<br />
                 <strong>Description:</strong> {task.description}
               </div>
+              <EditIcon/>
               <DeleteOutlineIcon 
                 onClick={() => handleDeleteTask(task._id)}
                 style={{ cursor: 'pointer', marginLeft: '10px' }}
