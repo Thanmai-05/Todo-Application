@@ -92,4 +92,21 @@ const changeTaskStatus = async(req,res) =>{
     }
 };
 
-module.exports = { register, login, getAllTasks, createTask, deleteTask, changeTaskStatus };
+const updateTask = async(req,res) => {
+  try{
+    const { id } = req.params;
+    const { title, description } = req.body;
+    const task = await Task.findById(id);
+    if (!task) {
+      return res.status(404).json({ error: 'Task not found' });
+    }
+    await Task.findByIdAndUpdate(id,{title:title, description:description},{new:true})
+    res.status(200).json({ message: 'Task updated successfully' });
+  } catch (error) {
+      console.error('Error updating task:', error);
+      res.status(500).json({ error: 'Failed to update task' });
+  }
+}
+
+
+module.exports = { register, login, getAllTasks, createTask, deleteTask, changeTaskStatus, updateTask };

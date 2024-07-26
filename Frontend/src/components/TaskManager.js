@@ -3,13 +3,14 @@ import axios from 'axios';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Checkbox from '@mui/material/Checkbox';
 import EditIcon from '@mui/icons-material/Edit';
+import EditTask from './EditTask';
 
 function TaskManager() {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
-
+  const [editTask, setEditTask] = useState(null);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -71,6 +72,11 @@ function TaskManager() {
       console.log(error);
     }
   };
+  const handleUpdate = (updatedTask) =>
+  {
+    setTasks(tasks.map(task => task._id===updatedTask ? updatedTask : task))
+    setEditTask(null)
+  };
   
   return (
     <div className='container'>
@@ -98,6 +104,11 @@ function TaskManager() {
               padding: '10px',
               borderRadius: '5px'
             }}>
+              {editTask && editTask._id === task._id 
+              ?
+              (<EditTask task={task} onUpdate={handleUpdate}/>)
+              :
+              <></> }
               <div style={{display:'flex', alignItems:'center'}}>
                 <Checkbox {...label}  color="success" checked= {task.status}
                 onClick={() => handleStatus(task._id)}  />
@@ -106,7 +117,7 @@ function TaskManager() {
                 <strong>Task:</strong> {task.title}<br />
                 <strong>Description:</strong> {task.description}
               </div>
-              <EditIcon/>
+              <EditIcon onClick={()=> setEditTodo(!editTodo)}/>
               <DeleteOutlineIcon 
                 onClick={() => handleDeleteTask(task._id)}
                 style={{ cursor: 'pointer', marginLeft: '10px' }}
