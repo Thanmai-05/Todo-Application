@@ -74,7 +74,9 @@ function TaskManager() {
   };
   const handleUpdate = (updatedTask) =>
   {
-    setTasks(tasks.map(task => task._id===updatedTask ? updatedTask : task))
+    console.log(updatedTask.title);
+    setTasks(tasks.map(task => task._id===updatedTask._id ? updatedTask : task))
+    console.log(tasks)
     setEditTask(null)
   };
   
@@ -94,7 +96,14 @@ function TaskManager() {
         <h2 style={{marginTop:'15px'}}>Your Tasks</h2>
         <ul className='task-list'>
           {tasks.map((task) => (
-            
+            <>
+            {editTask && editTask._id === task._id 
+              ?
+              <EditTask task={task} onUpdate={handleUpdate}/>
+              :
+              <></>
+              }
+
             <li key={task._id} style={{ 
               display: 'flex', 
               justifyContent: 'space-between', 
@@ -104,11 +113,7 @@ function TaskManager() {
               padding: '10px',
               borderRadius: '5px'
             }}>
-              {editTask && editTask._id === task._id 
-              ?
-              (<EditTask task={task} onUpdate={handleUpdate}/>)
-              :
-              <></> }
+              
               <div style={{display:'flex', alignItems:'center'}}>
                 <Checkbox {...label}  color="success" checked= {task.status}
                 onClick={() => handleStatus(task._id)}  />
@@ -117,12 +122,13 @@ function TaskManager() {
                 <strong>Task:</strong> {task.title}<br />
                 <strong>Description:</strong> {task.description}
               </div>
-              <EditIcon onClick={()=> setEditTodo(!editTodo)}/>
+              <EditIcon onClick={()=> {setEditTask(task)}}/>
               <DeleteOutlineIcon 
                 onClick={() => handleDeleteTask(task._id)}
                 style={{ cursor: 'pointer', marginLeft: '10px' }}
               />
             </li>
+            </>
           ))}
         </ul>
       </div>
