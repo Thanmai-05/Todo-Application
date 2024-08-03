@@ -8,8 +8,10 @@ function EditTask({ task, onUpdate }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("in handlesubmit in EditTask.js")
+    const token =localStorage.getItem('token')
+    console.log("at edittask",token)
+    if(token){
     try {
-        const token =localStorage.getItem('token')
       const response = await axios.put(`http://localhost:5000/api/taskedit/${task._id}`, {
         title,
         description
@@ -21,11 +23,13 @@ function EditTask({ task, onUpdate }) {
       onUpdate(response.data.updatedtask);
     } catch (error) {
       console.error('Error updating todo:', error);
+    }}else{
+      console.log("no token")
     }
   };
 
   return (
-    <div className='container' style={{boxShadow:'2 0 10px black', borderRadius:'5px', backgroundColor:'#cacaca'}}>
+    <div className='container' style={{boxShadow:'2 0 10px black', borderRadius:'5px', }}>
     <form onSubmit={handleSubmit}>
       <div style={{display:'flex'}}>
       <div>

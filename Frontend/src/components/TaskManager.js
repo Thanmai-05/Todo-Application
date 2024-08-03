@@ -4,6 +4,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Checkbox from '@mui/material/Checkbox';
 import EditIcon from '@mui/icons-material/Edit';
 import EditTask from './EditTask';
+//import { Navigate } from 'react-router-dom';
 
 function TaskManager() {
   const [tasks, setTasks] = useState([]);
@@ -15,10 +16,22 @@ function TaskManager() {
   useEffect(() => {
     const fetchTasks = async () => {
       const token = localStorage.getItem('token');
+      /*const res = await axios.get('http://localhost:5000/api/validate-token', {headers: {Authorization: `Bearer ${token}`}});
+      if (!res.data) { 
+        Navigate('/login');
+        console.log("ttttt",res.data)
+        return;
+      }*/
+     console.log("token from fetch tasks handle: ",token)
+     if(token){
+      try{
       const response = await axios.get('http://localhost:5000/api/tasks', {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setTasks(response.data);
+      setTasks(response.data);}catch(error){
+        
+        console.log("errorat task manager fetch tasks",error)
+      }}
     };
 
     fetchTasks();
@@ -96,14 +109,6 @@ function TaskManager() {
         <h2 style={{marginTop:'15px'}}>Your Tasks</h2>
         <ul className='task-list'>
           {tasks.map((task) => (
-            <>
-            {editTask && editTask._id === task._id 
-              ?
-              <EditTask task={task} onUpdate={handleUpdate}/>
-              :
-              <></>
-              }
-
             <li key={task._id} style={{ 
               display: 'flex', 
               justifyContent: 'space-between', 
@@ -119,8 +124,13 @@ function TaskManager() {
                 onClick={() => handleStatus(task._id)}  />
               </div>
               <div style={{ flex: 1 }}>
-                <strong>Task:</strong> {task.title}<br />
-                <strong>Description:</strong> {task.description}
+                {editTask && editTask._id === task._id 
+                  ?(
+                  <EditTask task={task} onUpdate={handleUpdate}/>)
+                  :(<>
+                  <strong>Task:</strong> {task.title}<br />
+                  <strong>Description:</strong> {task.description}</>)
+                }
               </div>
               <EditIcon onClick={()=> {setEditTask(task)}}/>
               <DeleteOutlineIcon 
@@ -128,7 +138,6 @@ function TaskManager() {
                 style={{ cursor: 'pointer', marginLeft: '10px' }}
               />
             </li>
-            </>
           ))}
         </ul>
       </div>

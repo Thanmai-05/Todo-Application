@@ -1,17 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import PersonIcon from '@mui/icons-material/Person';
 
-function CustomNavbar({ isAuthenticated, setIsAuthenticated }) {
+function CustomNavbar({ isAuthenticated, setIsAuthenticated, user }) {
   const navigate = useNavigate();
-  useEffect(() => {
-    console.log(isAuthenticated);
+  /*useEffect(() => {
+    console.log("ii",isAuthenticated);
   }, [isAuthenticated]);
+  */
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user')
+    localStorage.removeItem('isAuthenticated');
     setIsAuthenticated(false);
     navigate('/');
   };
@@ -24,7 +26,7 @@ function CustomNavbar({ isAuthenticated, setIsAuthenticated }) {
       navigate('/taskmanager');
     }
   };
-  const user = localStorage.getItem('user')
+  //const user = localStorage.getItem('user')
 
   const navLinkStyle = {
     fontWeight: 'bold',
@@ -36,7 +38,7 @@ function CustomNavbar({ isAuthenticated, setIsAuthenticated }) {
 
   return (
     <Navbar bg="light" expand="lg" sticky='top' className="shadow-sm">
-      <Container maxWidth="sm">
+      <Container >
         <Navbar.Brand href='/' style={{fontSize: '24px', fontStyle: 'initial', fontWeight: 'bolder', color: '#007bff'}}>Todo List</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">

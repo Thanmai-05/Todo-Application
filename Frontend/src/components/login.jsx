@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-function Login({setIsAuthenticated}) {
+function Login({setIsAuthenticated, setUser}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -13,6 +13,7 @@ function Login({setIsAuthenticated}) {
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', response.data.username)
       setIsAuthenticated(true);
+      setUser(username)
       navigate('/taskmanager');
     } catch (error) {
       alert("Login Failed. Invalid Credentials!!!.")

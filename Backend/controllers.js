@@ -31,7 +31,7 @@ const login = async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
-    const token = jwt.sign({ userId: user._id }, 'secret-key', { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user._id }, 'secret-key', { expiresIn: '1hr' });
     res.status(200).json({ token , username});
   } catch (error) {
     console.error('Login error:', error);
@@ -111,5 +111,19 @@ const updateTask = async(req,res) => {
   }
 }
 
+const validateToken = async (req, res) => {
+  const token = req.headers.authorization.split(' ')[1];
+  try {
+    const decoded = jwt.verify(token, 'secret-key'); // Ensure 'secret-key' matches the one used to sign the token
+    const user = await User.findById(decoded.userId);
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+    res.status(200).json({ message: 'Token is valid' });
+  } catch (error) {
+    console.error('Token validation error:', error);
+    res.status(401).json({ error: 'Invalid token' });
+  }
+};
 
-module.exports = { register, login, getAllTasks, createTask, deleteTask, changeTaskStatus, updateTask };
+module.exports = { register, login, getAllTasks, createTask, deleteTask, changeTaskStatus, updateTask, validateToken };

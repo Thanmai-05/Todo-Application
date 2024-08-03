@@ -10,7 +10,7 @@
     "react-redux": "^9.1.0",
     "redux": "^5.0.1"
   },
-  "name": "exploding-kitten",
+  "name": "Todo-application backend",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
