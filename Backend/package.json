@@ -10,7 +10,7 @@
     "react-redux": "^9.1.0",
     "redux": "^5.0.1"
   },
-  "name": "Todo-application backend",
+  "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
