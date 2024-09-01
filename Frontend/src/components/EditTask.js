@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 
 function EditTask({ task, onUpdate }) {
   const [title, setTitle] = useState(task.title);
@@ -8,24 +9,27 @@ function EditTask({ task, onUpdate }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("in handlesubmit in EditTask.js")
-    const token =localStorage.getItem('token')
-    console.log("at edittask",token)
-    if(token){
+    ///const token =localStorage.getItem('token')
+    ///console.log("at edittask",token)
+    ///if(token){
     try {
       const response = await axios.put(`http://localhost:5000/api/taskedit/${task._id}`, {
         title,
         description
-      },{
-        headers: { Authorization: `Bearer ${token}`},
-      });
-      console.log(response.data);
-      console.log(response.data.updatedtask);
-      onUpdate(response.data.updatedtask);
+      }
+      ///,{
+        ///headers: { Authorization: `Bearer ${token}`},
+      ///}
+    );
+      console.log(response?.data);
+      console.log(response?.data?.updatedtask);
+      onUpdate(response?.data?.updatedtask);
     } catch (error) {
       console.error('Error updating todo:', error);
-    }}else{
-      console.log("no token")
     }
+    ///}else{
+      ///console.log("no token")
+    ///}
   };
 
   return (

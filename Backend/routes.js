@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { register, login, getAllTasks, createTask, deleteTask, changeTaskStatus, updateTask, validateToken } = require('./controllers');
+const { register, login,logout, checkToken, getAllTasks, createTask, deleteTask, changeTaskStatus, updateTask, validateToken } = require('./controllers');
 const authenticateToken = require('./middleware');
 
 // Auth Routes
 router.post('/register', register);
 router.post('/login', login);
+router.post('/logout',logout);
+router.post('/checkToken',checkToken);
 router.get('/validate-token', authenticateToken, validateToken);
 // Task Routes
 router.get('/tasks', authenticateToken, getAllTasks);

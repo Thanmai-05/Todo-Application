@@ -1,21 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import PersonIcon from '@mui/icons-material/Person';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+
+///axios.defaults.withCredentials = true;
+import Cookies from 'js-cookie'
+import axios from 'axios';
+
 
 function CustomNavbar({ isAuthenticated, setIsAuthenticated, user }) {
   const navigate = useNavigate();
   /*useEffect(() => {
     console.log("ii",isAuthenticated);
   }, [isAuthenticated]);
+
   */
+ const [delsnack, setdelsnack] = useState(false);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user')
-    localStorage.removeItem('isAuthenticated');
-    setIsAuthenticated(false);
-    navigate('/');
+    console.log("inlogout")
+    try{
+      const response = axios.post('http://localhost:5000/api/logout', ) ;
+      console.log(response);
+      setIsAuthenticated(false);
+      setdelsnack(true)
+      // alert('Logged out Successfully!!!')
+
+      navigate('/');
+    }
+    catch(error){
+      console.log(error);
+    }
+    
+    ///localStorage.removeItem('token');
+    ///localStorage.removeItem('user')
+    ///localStorage.removeItem('isAuthenticated');
+    ///setIsAuthenticated(false);
   };
 
   const handleTasksClick = () => {
@@ -36,9 +58,13 @@ function CustomNavbar({ isAuthenticated, setIsAuthenticated, user }) {
     transition: 'color 0.3s ease'
   };
 
+const handleclosesnackbar = () => {
+  setdelsnack(false)
+}
+
   return (
     <Navbar bg="light" expand="lg" sticky='top' className="shadow-sm">
-      <Container >
+      <Container style={{overflow:'hidden'}} >
         <Navbar.Brand href='/' style={{fontSize: '24px', fontStyle: 'initial', fontWeight: 'bolder', color: '#007bff'}}>Todo List</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -64,6 +90,18 @@ function CustomNavbar({ isAuthenticated, setIsAuthenticated, user }) {
           </Nav>
         </Navbar.Collapse>
       </Container>
+      {delsnack? 
+      <Snackbar open={delsnack} autoHideDuration={6000} onClose={handleclosesnackbar} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
+        <Alert
+          severity="success"
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          Successfully Logged out!!!
+        </Alert>
+      </Snackbar> : null 
+      }
+
     </Navbar>
   );
 }

@@ -4,6 +4,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Checkbox from '@mui/material/Checkbox';
 import EditIcon from '@mui/icons-material/Edit';
 import EditTask from './EditTask';
+axios.defaults.withCredentials = true;
 //import { Navigate } from 'react-router-dom';
 
 function TaskManager() {
@@ -15,23 +16,26 @@ function TaskManager() {
 
   useEffect(() => {
     const fetchTasks = async () => {
-      const token = localStorage.getItem('token');
+      ///const token = localStorage.getItem('token');
       /*const res = await axios.get('http://localhost:5000/api/validate-token', {headers: {Authorization: `Bearer ${token}`}});
       if (!res.data) { 
         Navigate('/login');
         console.log("ttttt",res.data)
         return;
       }*/
-     console.log("token from fetch tasks handle: ",token)
-     if(token){
+     ///console.log("token from fetch tasks handle: ",token)
+     ///if(token){
       try{
-      const response = await axios.get('http://localhost:5000/api/tasks', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get('http://localhost:5000/api/tasks', 
+        ///{
+        ///headers: { Authorization: `Bearer ${token}` },
+      //}
+      );
       setTasks(response.data);}catch(error){
         
         console.log("errorat task manager fetch tasks",error)
-      }}
+      }
+    ///}
     };
 
     fetchTasks();
@@ -41,15 +45,19 @@ function TaskManager() {
   
 
   const handleCreateTask = async () => {
-    const token = localStorage.getItem('token');
-    await axios.post('http://localhost:5000/api/tasks', { title, description }, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    ///const token = localStorage.getItem('token');
+    await axios.post('http://localhost:5000/api/tasks', { title, description }
+      ///, {
+      ///headers: { Authorization: `Bearer ${token}` },
+    ///}
+  );
     setTitle('');
     setDescription('');
-    const response = await axios.get('http://localhost:5000/api/tasks', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await axios.get('http://localhost:5000/api/tasks'
+      ///, {
+      ///headers: { Authorization: `Bearer ${token}` },
+    ///}
+    );
     setTasks(response.data);
   };
 
@@ -57,14 +65,17 @@ function TaskManager() {
     try{
       // eslint-disable-next-line no-restricted-globals
       if(confirm("do you want to delete")){
-    const token = localStorage.getItem('token');
-    await axios.delete(`http://localhost:5000/api/tasks/${id}`,{
-        headers: { Authorization: `Bearer ${token}`},
-      });
-      const response = await axios.get('http://localhost:5000/api/tasks', {
-        headers: { Authorization: `Bearer ${token}`
-        },
-        });
+    ///const token = localStorage.getItem('token');
+    await axios.delete(`http://localhost:5000/api/tasks/${id}`
+      ///,{
+        ///headers: { Authorization: `Bearer ${token}`},
+      ///}
+      );
+      const response = await axios.get('http://localhost:5000/api/tasks'
+        ///, {
+        ///headers: { Authorization: `Bearer ${token}`},
+        ///}
+        );
         setTasks(response.data);
       }
       }catch(error){
@@ -73,13 +84,17 @@ function TaskManager() {
   };
   const handleStatus = async (id) =>{
     try{
-      const token = localStorage.getItem('token');
-      await axios.put('http://localhost:5000/api/tasks',{id},{
-          headers: { Authorization: `Bearer ${token}`},
-      });
-      const response = await axios.get('http://localhost:5000/api/tasks', {
-        headers: { Authorization: `Bearer ${token}`},
-      });
+      ///const token = localStorage.getItem('token');
+      await axios.put('http://localhost:5000/api/tasks',{id}
+        ///,{
+          ///headers: { Authorization: `Bearer ${token}`},
+      ///}
+      );
+      const response = await axios.get('http://localhost:5000/api/tasks', 
+        ///{
+        ///headers: { Authorization: `Bearer ${token}`},
+      ///}
+      );
       setTasks(response.data);
     }catch(error){
       console.log(error);

@@ -7,18 +7,22 @@ const cors = require('cors');
 const routes = require('./routes')
 const dotenv = require('dotenv')
 const app = express();
+const cookieParser = require('cookie-parser');
 const PORT = process.env.PORT || 5000;
 dotenv.config()
-
-app.use(cors());
+app.use(cors({origin:'http://localhost:3000',credentials:true,methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  allowedHeaders: 'Content-Type,Authorization'}));
+app.use(cookieParser())
 app.use(bodyParser.json());
-const User = require('./models/User');
+
+const Database_URL = process.env.MONGODB_URL
 
 // Connect to MongoDB
 const connectToDb = async ()=>{
     try{
       await mongoose.connect(
-          `mongodb+srv://Thanmai:${process.env.SECRET_KEY}@cluster0.6leylld.mongodb.net/?retryWrites=true&w=majority`,
+          
+          `${Database_URL}`,
           {
               useNewUrlParser: true,
               useUnifiedTopology: true,

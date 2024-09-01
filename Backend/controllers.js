@@ -1,3 +1,4 @@
+const { strict } = require('assert');
 const Task = require('./models/Task')
 const User = require('./models/User')
 const bcrypt = require('bcrypt');
@@ -25,19 +26,49 @@ const login = async (req, res) => {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: 'User not found', status: 404 });
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
-    const token = jwt.sign({ userId: user._id }, 'secret-key', { expiresIn: '1hr' });
-    res.status(200).json({ token , username});
+    const token = jwt.sign({ userId: user._id },`${process.env.Token_Secret_Key}`, { expiresIn: '1d' });
+    res.cookie('token',token,{httpOnly: true, maxAge: 24*60*60*1000, sameSite:'strict'});
+    res.cookie('user',username,{httpOnly:true, maxAge:24*60*60*1000, sameSite:'strict' });
+    res.cookie('isauth',true,{expires: new Date(2147483647 * 1000)})
+    res.json({message: "Logged in successfully"});
+    //res.status(200).json({ token , username});
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ error: 'Login failed' });
   }
 };
+
+const logout = async(req,res) =>{
+  try{
+    res.clearCookie('token');
+    res.clearCookie('user');
+    res.cookie('isauth',false, {expires: new Date(2147483647 * 1000)});
+    res.json({message: "Logged out successfully"});
+    }catch(error){
+      console.error('Logout error:', error);
+      res.status(500).json({error: error});
+    }
+}
+
+const checkToken = async(req,res)=>{
+  try{
+    const token = req.cookies.token;
+    if(!token){
+      res.status(401).json({error: "Unauthorized"});
+      }
+    else{
+      res.status(200).json({exists:true})
+    }
+  }catch(error){
+    console.error('Check token error:', error);
+  }
+}
 
 const getAllTasks = async (req, res) => {
   try {
@@ -111,19 +142,22 @@ const updateTask = async(req,res) => {
   }
 }
 
+
 const validateToken = async (req, res) => {
-  const token = req.headers.authorization.split(' ')[1];
+  //const token = req.headers.authorization.split(' ')[1];
+  const token = req.cookies.token;
   try {
     const decoded = jwt.verify(token, 'secret-key'); // Ensure 'secret-key' matches the one used to sign the token
     const user = await User.findById(decoded.userId);
     if (!user) {
       return res.status(401).json({ error: 'Invalid token' });
     }
-    res.status(200).json({ message: 'Token is valid' });
+    res.cookie('isauth',true,{expires: new Date(2147483647 * 1000)})
+    res.status(200).json({user:user.username, message: 'Token is valid' });
   } catch (error) {
     console.error('Token validation error:', error);
     res.status(401).json({ error: 'Invalid token' });
   }
 };
 
-module.exports = { register, login, getAllTasks, createTask, deleteTask, changeTaskStatus, updateTask, validateToken };
+module.exports = { register, login, logout, checkToken, getAllTasks, createTask, deleteTask, changeTaskStatus, updateTask, validateToken };
