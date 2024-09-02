@@ -65,7 +65,7 @@ function MainComponent() {
         setUser(null);
         
       }
-    });
+    },[]);
   
   return (
     
