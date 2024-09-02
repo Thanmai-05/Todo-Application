@@ -11,7 +11,7 @@ function Login({setIsAuthenticated, setUser}) {
   const handleLogin = async () => {
     try {
       console.log('in handle login')
-      const response = await axios.post(`${Backend_url}/login`, { username, password });
+      await axios.post(`${Backend_url}/login`, { username, password });
       ///localStorage.setItem('token', response.data.token);
       ///localStorage.setItem('user', response.data.username)
       setIsAuthenticated(true);
