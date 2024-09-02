@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
+const Backend_url = process.env.REACT_APP_BACKEND_URL;
+
 
 function EditTask({ task, onUpdate }) {
   const [title, setTitle] = useState(task.title);
@@ -13,7 +15,7 @@ function EditTask({ task, onUpdate }) {
     ///console.log("at edittask",token)
     ///if(token){
     try {
-      const response = await axios.put(`http://localhost:5000/api/taskedit/${task._id}`, {
+      const response = await axios.put(`${Backend_url}/taskedit/${task._id}`, {
         title,
         description
       }

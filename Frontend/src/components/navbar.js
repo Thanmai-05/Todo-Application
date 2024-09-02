@@ -4,10 +4,12 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 import PersonIcon from '@mui/icons-material/Person';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import axios from 'axios';
+const Backend_url = process.env.REACT_APP_BACKEND_URL;
+
 
 ///axios.defaults.withCredentials = true;
 // import Cookies from 'js-cookie'
-import axios from 'axios';
 
 
 function CustomNavbar({ isAuthenticated, setIsAuthenticated, user }) {
@@ -22,7 +24,7 @@ function CustomNavbar({ isAuthenticated, setIsAuthenticated, user }) {
   const handleLogout = () => {
     console.log("inlogout")
     try{
-      const response = axios.post('http://localhost:5000/api/logout', ) ;
+      const response = axios.post(`${Backend_url}/logout`, ) ;
       console.log(response);
       setIsAuthenticated(false);
       setdelsnack(true)

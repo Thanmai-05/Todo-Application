@@ -10,6 +10,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import "./style.css";
 import Cookies from 'js-cookie'
 axios.defaults.withCredentials = true;
+const Backend_url = process.env.REACT_APP_BACKEND_URL;
+
 
 function App(){
   return(
@@ -30,7 +32,7 @@ function MainComponent() {
     console.log("token:",token)
     if(Cookies.get('isauth')==="true"){
       console.log("isauth in app.js: ",typeof(Cookies.get('isauth')))
-      axios.get('http://localhost:5000/api/validate-token')
+      axios.get(`${Backend_url}/validate-token`)
       .then(response => {
         console.log(response.data.user)
         setIsAuthenticated(true);

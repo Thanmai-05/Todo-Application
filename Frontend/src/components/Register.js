@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 axios.defaults.withCredentials = true;
+const Backend_url = process.env.REACT_APP_BACKEND_URL;
+
 
 function Register({setIsAuthenticated}) {
   const [username, setUsername] = useState('');
@@ -13,7 +15,7 @@ function Register({setIsAuthenticated}) {
   const handleRegister = async () => {
     try {
       console.log("inside handleregister")
-      await axios.post('http://localhost:5000/api/register', { username, password });
+      await axios.post(`${Backend_url}/register`, { username, password });
       alert('User registered successfully');
       setUsername('');
       setPassword('');

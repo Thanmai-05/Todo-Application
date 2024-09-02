@@ -5,6 +5,8 @@ import Checkbox from '@mui/material/Checkbox';
 import EditIcon from '@mui/icons-material/Edit';
 import EditTask from './EditTask';
 axios.defaults.withCredentials = true;
+const Backend_url = process.env.REACT_APP_BACKEND_URL;
+
 //import { Navigate } from 'react-router-dom';
 
 function TaskManager() {
@@ -26,7 +28,7 @@ function TaskManager() {
      ///console.log("token from fetch tasks handle: ",token)
      ///if(token){
       try{
-      const response = await axios.get('http://localhost:5000/api/tasks', 
+      const response = await axios.get(`${Backend_url}/tasks`, 
         ///{
         ///headers: { Authorization: `Bearer ${token}` },
       //}
@@ -46,14 +48,14 @@ function TaskManager() {
 
   const handleCreateTask = async () => {
     ///const token = localStorage.getItem('token');
-    await axios.post('http://localhost:5000/api/tasks', { title, description }
+    await axios.post(`${Backend_url}/tasks`, { title, description }
       ///, {
       ///headers: { Authorization: `Bearer ${token}` },
     ///}
   );
     setTitle('');
     setDescription('');
-    const response = await axios.get('http://localhost:5000/api/tasks'
+    const response = await axios.get(`${Backend_url}/tasks`
       ///, {
       ///headers: { Authorization: `Bearer ${token}` },
     ///}
@@ -66,12 +68,12 @@ function TaskManager() {
       // eslint-disable-next-line no-restricted-globals
       if(confirm("do you want to delete")){
     ///const token = localStorage.getItem('token');
-    await axios.delete(`http://localhost:5000/api/tasks/${id}`
+    await axios.delete(`${Backend_url}/tasks/${id}`
       ///,{
         ///headers: { Authorization: `Bearer ${token}`},
       ///}
       );
-      const response = await axios.get('http://localhost:5000/api/tasks'
+      const response = await axios.get(`${Backend_url}/tasks`
         ///, {
         ///headers: { Authorization: `Bearer ${token}`},
         ///}
@@ -85,12 +87,12 @@ function TaskManager() {
   const handleStatus = async (id) =>{
     try{
       ///const token = localStorage.getItem('token');
-      await axios.put('http://localhost:5000/api/tasks',{id}
+      await axios.put(`${Backend_url}/tasks`,{id}
         ///,{
           ///headers: { Authorization: `Bearer ${token}`},
       ///}
       );
-      const response = await axios.get('http://localhost:5000/api/tasks', 
+      const response = await axios.get(`${Backend_url}/tasks`, 
         ///{
         ///headers: { Authorization: `Bearer ${token}`},
       ///}
