@@ -32,7 +32,7 @@ function MainComponent() {
     console.log("token:",token)
     if(Cookies.get('isauth')==="true"){
       console.log("isauth in app.js: ",typeof(Cookies.get('isauth')))
-      axios.get(`${Backend_url}/validate-token`)
+      axios.get(`${Backend_url}/api/validate-token`)
       .then(response => {
         console.log(response.data.user)
         setIsAuthenticated(true);
