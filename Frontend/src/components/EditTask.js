@@ -15,7 +15,7 @@ function EditTask({ task, onUpdate }) {
     ///console.log("at edittask",token)
     ///if(token){
     try {
-      const response = await axios.put(`${Backend_url}/taskedit/${task._id}`, {
+      const response = await axios.put(`${Backend_url}/api/taskedit/${task._id}`, {
         title,
         description
       }

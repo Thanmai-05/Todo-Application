@@ -28,7 +28,7 @@ function TaskManager() {
      ///console.log("token from fetch tasks handle: ",token)
      ///if(token){
       try{
-      const response = await axios.get(`${Backend_url}/tasks`, 
+      const response = await axios.get(`${Backend_url}/api/tasks`, 
         ///{
         ///headers: { Authorization: `Bearer ${token}` },
       //}
@@ -48,14 +48,14 @@ function TaskManager() {
 
   const handleCreateTask = async () => {
     ///const token = localStorage.getItem('token');
-    await axios.post(`${Backend_url}/tasks`, { title, description }
+    await axios.post(`${Backend_url}/api/tasks`, { title, description }
       ///, {
       ///headers: { Authorization: `Bearer ${token}` },
     ///}
   );
     setTitle('');
     setDescription('');
-    const response = await axios.get(`${Backend_url}/tasks`
+    const response = await axios.get(`${Backend_url}/api/tasks`
       ///, {
       ///headers: { Authorization: `Bearer ${token}` },
     ///}
@@ -68,12 +68,12 @@ function TaskManager() {
       // eslint-disable-next-line no-restricted-globals
       if(confirm("do you want to delete")){
     ///const token = localStorage.getItem('token');
-    await axios.delete(`${Backend_url}/tasks/${id}`
+    await axios.delete(`${Backend_url}/api/tasks/${id}`
       ///,{
         ///headers: { Authorization: `Bearer ${token}`},
       ///}
       );
-      const response = await axios.get(`${Backend_url}/tasks`
+      const response = await axios.get(`${Backend_url}/api/tasks`
         ///, {
         ///headers: { Authorization: `Bearer ${token}`},
         ///}
@@ -87,12 +87,12 @@ function TaskManager() {
   const handleStatus = async (id) =>{
     try{
       ///const token = localStorage.getItem('token');
-      await axios.put(`${Backend_url}/tasks`,{id}
+      await axios.put(`${Backend_url}/api/tasks`,{id}
         ///,{
           ///headers: { Authorization: `Bearer ${token}`},
       ///}
       );
-      const response = await axios.get(`${Backend_url}/tasks`, 
+      const response = await axios.get(`${Backend_url}/api/tasks`, 
         ///{
         ///headers: { Authorization: `Bearer ${token}`},
       ///}

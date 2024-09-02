@@ -15,7 +15,7 @@ function Register({setIsAuthenticated}) {
   const handleRegister = async () => {
     try {
       console.log("inside handleregister")
-      await axios.post(`${Backend_url}/register`, { username, password });
+      await axios.post(`${Backend_url}/api/register`, { username, password });
       alert('User registered successfully');
       setUsername('');
       setPassword('');

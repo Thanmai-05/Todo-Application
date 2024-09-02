@@ -24,7 +24,7 @@ function CustomNavbar({ isAuthenticated, setIsAuthenticated, user }) {
   const handleLogout = () => {
     console.log("inlogout")
     try{
-      const response = axios.post(`${Backend_url}/logout`, ) ;
+      const response = axios.post(`${Backend_url}/api/logout`, ) ;
       console.log(response);
       setIsAuthenticated(false);
       setdelsnack(true)
