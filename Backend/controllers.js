@@ -32,6 +32,7 @@ const login = async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
+    console.log(process.env.NODE_ENV === 'production')
     const token = jwt.sign({ userId: user._id },process.env.Token_Secret_Key, { expiresIn: '1d' });
     res.cookie('token',token,{httpOnly: true, secure: process.env.NODE_ENV === 'production', maxAge: 24*60*60*1000, sameSite:'None'});
     res.cookie('user',username,{httpOnly:true,secure: process.env.NODE_ENV === 'production', maxAge:24*60*60*1000, sameSite:'None' });
