@@ -10,7 +10,9 @@ const app = express();
 const cookieParser = require('cookie-parser');
 const PORT = process.env.PORT || 5000;
 dotenv.config()
-app.use(cors({origin:['http://localhost:3000','https://todo-application-010m.onrender.com'],credentials:true,methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+app.use(cors({origin:['http://localhost:3000','https://todo-application-010m.onrender.com'],
+  credentials:true,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: 'Content-Type,Authorization'}));
 app.use(cookieParser())
 app.use(bodyParser.json());

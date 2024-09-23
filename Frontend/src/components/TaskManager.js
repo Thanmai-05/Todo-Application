@@ -32,6 +32,7 @@ function TaskManager() {
         ///{
         ///headers: { Authorization: `Bearer ${token}` },
       //}
+      { withCredentials: true }
       );
       setTasks(response.data);}catch(error){
         
@@ -48,14 +49,16 @@ function TaskManager() {
 
   const handleCreateTask = async () => {
     ///const token = localStorage.getItem('token');
-    await axios.post(`${Backend_url}/api/tasks`, { title, description }
+    await axios.post(`${Backend_url}/api/tasks`, { title, description },
       ///, {
       ///headers: { Authorization: `Bearer ${token}` },
     ///}
+    { withCredentials: true }
   );
     setTitle('');
     setDescription('');
-    const response = await axios.get(`${Backend_url}/api/tasks`
+    const response = await axios.get(`${Backend_url}/api/tasks`,
+      { withCredentials: true }
       ///, {
       ///headers: { Authorization: `Bearer ${token}` },
     ///}
@@ -71,9 +74,11 @@ function TaskManager() {
     await axios.delete(`${Backend_url}/api/tasks/${id}`
       ///,{
         ///headers: { Authorization: `Bearer ${token}`},
-      ///}
+      ///},
+      ,{ withCredentials: true }
       );
-      const response = await axios.get(`${Backend_url}/api/tasks`
+      const response = await axios.get(`${Backend_url}/api/tasks`,
+        { withCredentials: true }
         ///, {
         ///headers: { Authorization: `Bearer ${token}`},
         ///}
@@ -88,11 +93,13 @@ function TaskManager() {
     try{
       ///const token = localStorage.getItem('token');
       await axios.put(`${Backend_url}/api/tasks`,{id}
+        ,{ withCredentials: true }
         ///,{
           ///headers: { Authorization: `Bearer ${token}`},
       ///}
       );
       const response = await axios.get(`${Backend_url}/api/tasks`, 
+        { withCredentials: true }
         ///{
         ///headers: { Authorization: `Bearer ${token}`},
       ///}
